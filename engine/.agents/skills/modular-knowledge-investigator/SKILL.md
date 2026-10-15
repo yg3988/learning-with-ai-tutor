@@ -36,7 +36,7 @@ description: >-
 
 ### 2단계: 디렉터리 및 분할 파일 작성
 - 디렉터리 생성: `knowledge/step_{N}_{slug}/` (예: `knowledge/step_1_contract-governance/`)
-- 분할 문서 작성 (각 파일은 자립적인 완전한 기술 문서로 작성):
+- 분할 문서 작성 (`markdown-doc-guard` 스킬의 5대 서식 원칙을 준수하여 괄호 분리 및 VS Code Preview 렌더링 무결성 보장):
   - `01_prerequisites_{주제}.md`
   - `02_foundations_{주제}.md`
   - `03_deep_dive_{주제}.md`
