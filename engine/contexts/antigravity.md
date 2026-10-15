@@ -44,7 +44,7 @@
    - 일반 강의 절차를 즉시 중단하고 `curriculum-architect` 스킬을 실행합니다.
    - 서술형 문답은 일반 대화로, 명확한 양자택일/객관식 버전 선택 및 프리셋 선택은 `ask_question` 모달로 진행합니다.
    - 합의된 내용을 바탕으로 `CURRICULUM.md`와 `CORRECTIONS.md`를 생성하고 `progress.json`을 초기화합니다.
-     - `CURRICULUM.md` 작성 시 각 스텝 상단에 3대 지식 모듈별 학습 기대점(`01_prerequisites`, `02_foundations`, `03_deep_dive`)을 명시하고, 하단에 학습자가 확실히 배워갈 핵심 체득 지식(Key Competencies)과 상세 학습 내용을 구조화하여 작성합니다.
+     - `CURRICULUM.md` 작성 시 최상단에 확정 기술 스택 및 버전 매트릭스 표를 작성하고, 각 스텝 상단에 3대 지식 모듈별 학습 기대점(`01_prerequisites`, `02_foundations`, `03_deep_dive`)을 명시하고, 하단에 학습자가 확실히 배워갈 핵심 체득 지식(Key Competencies)과 상세 학습 내용을 구조화하여 작성합니다.
    - `vercel-labs/find-skills`를 통해 코드 컨벤션/안티패턴 특화 스킬을 검색하여 추가할지 사용자에게 먼저 질문(옵트인)하며, 거절 시 건너뜁니다.
    - 사용자에게 확정 결과를 안내한 뒤, 1단계 학습 승인을 받아 1단계로 진입합니다.
 
@@ -57,7 +57,7 @@
 
 ### 2단계: 강의 내용 사전 검증 (Quality Gate)
 - 사용자에게 설명할 강의 계획, 아키텍처 이론, 코드 스니펫 초안을 수립합니다.
-- `lecture-verifier` 스킬을 실행하여 초안을 검증합니다 (`CORRECTIONS.md` 준수, 기술 표준 및 지정 버전 호환성 검사).
+- `lecture-verifier` 스킬을 실행하여 초안을 검증합니다 (`CURRICULUM.md`의 확정 스택/버전 매트릭스 및 `CORRECTIONS.md` 불변식을 동적으로 로드하여 해당 주제에 특화된 4대 품질 게이트 감사 수행).
 - 결함 발견 시 최대 2회까지 자동 수정 루프를 수행하여 최종 **`VERIFIED (PASS)`** 판정을 획득하고 `research/step_{current_step}_verification.md`를 저장합니다.
 
 ### 3단계: 검증 통과된 정제 강의 즉시 제공 (순서 전진 ⚡ 체감 지연 최소화)

@@ -43,7 +43,7 @@
 2. 부재 시 `.agents/skills/curriculum-architect/SKILL.md` 절차를 직접 읽고 실행합니다:
    - 번호가 매겨진 텍스트 선택지로 기술 스택 및 버전을 고정합니다.
    - 합의된 내용으로 `CURRICULUM.md`, `CORRECTIONS.md`, `progress.json`을 자동 생성합니다.
-     - `CURRICULUM.md` 작성 시 각 스텝 상단에 3대 지식 모듈별 학습 기대점(`01_prerequisites`, `02_foundations`, `03_deep_dive`)을 명시하고, 하단에 학습자가 확실히 배워갈 핵심 체득 지식(Key Competencies)과 상세 학습 내용을 구조화하여 작성합니다.
+     - `CURRICULUM.md` 작성 시 최상단에 확정 기술 스택 및 버전 매트릭스 표를 작성하고, 각 스텝 상단에 3대 지식 모듈별 학습 기대점(`01_prerequisites`, `02_foundations`, `03_deep_dive`)을 명시하고, 하단에 학습자가 확실히 배워갈 핵심 체득 지식(Key Competencies)과 상세 학습 내용을 구조화하여 작성합니다.
    - `vercel-labs/find-skills`를 통해 코드 컨벤션/안티패턴 특화 스킬을 검색하여 추가할지 사용자에게 먼저 질문(옵트인)하며, 거절 시 건너뜁니다.
    - 사용자 승인 후 1단계 학습으로 진입합니다.
 
@@ -53,7 +53,7 @@
 
 ### 2단계: 강의 내용 사전 검증 (Quality Gate)
 - 강의 초안과 코드 스니펫을 `.agents/skills/lecture-verifier/SKILL.md` 절차에 따라 자체 검증합니다.
-- `CORRECTIONS.md` 준수 및 버전 호환성을 감사하고 `research/step_{current_step}_verification.md`에 `VERIFIED (PASS)` 판정을 기록합니다.
+- `CURRICULUM.md`의 확정 스택/버전 매트릭스 및 `CORRECTIONS.md` 불변식을 동적으로 로드하여 해당 주제에 특화된 4대 품질 게이트를 감사하고 `research/step_{current_step}_verification.md`에 `VERIFIED (PASS)` 판정을 기록합니다.
 
 ### 3단계: 검증 통과된 정제 강의 즉시 제공
 - 검증 통과 즉시 정제된 강의 본문을 빠르게 출력합니다.
