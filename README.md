@@ -43,10 +43,13 @@ flowchart TD
     S1 --> S2["2단계: 강의 내용 사전 검증<br/>(lecture-verifier Quality Gate)"]
     S2 --> S3["3단계: 【검증 통과 정제 강의 즉시 제공】 ⚡<br/>(체감 지연 없는 빠른 응답)"]
     S2 -.->|"비동기 백그라운드 실행"| S4["4단계: 지식 3계층 분할 아카이빙 🤖<br/>(modular-knowledge-investigator)"]
-    S3 --> S5["5단계: 스텝 종료 & 차기 로드맵 기획<br/>(NEXT_CURRICULUM.md 자동 생성)"]
+    S3 --> S3B["4-B단계: 스텝 내 질의응답 실시간 영구 아카이빙 💬<br/>(04_qa_archive.md에 누적 보관)"]
+    S3B --> S5["5단계: 스텝 종료 & 차기 맞춤 로드맵 기획<br/>(03_deep_dive + 04_qa 취합하여 NEXT_CURRICULUM 생성)"]
+    S4 -.-> S5
 ```
 
-### 3대 지식 아카이빙 계층 (`knowledge/step_{N}_{slug}/`)
+### 4대 지식 아카이빙 계층 (`knowledge/step_{N}_{slug}/`)
 - `01_prerequisites_*.md`: 선행 네트워크/OS/문법 지식
 - `02_foundations_*.md`: 해당 단계 핵심 표준 명세 및 실무 설정
 - `03_deep_dive_*.md`: 대규모 분산 환경, 성능 최적화, 차기 프로젝트 후보
+- `04_qa_archive.md`: 스텝 내 학습자의 모든 질의응답 및 심층 해설 실시간 영구 보관

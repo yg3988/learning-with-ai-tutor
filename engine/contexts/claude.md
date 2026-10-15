@@ -29,6 +29,7 @@
 | `research/step_{N}_research.md` | 단계별 기술 표준 및 RFC 조사 보고서 | 에이전트 (`step-researcher` 절차 실행) |
 | `research/step_{N}_verification.md` | 강의 내용 무결성 및 버전 정합성 사전 검증 보고서 | 에이전트 (`lecture-verifier` 절차 실행) |
 | `knowledge/step_{N}_{slug}/` | 주제별 분할 지식 모듈 (`01_prerequisites`, `02_foundations`, `03_deep_dive`) | 에이전트 (`modular-knowledge-investigator` 절차 실행) |
+| `knowledge/step_{N}_{slug}/04_qa_archive.md` | 스텝 내 학습자 질의응답 및 심층 해설 영구 보관 문서 | 에이전트 (`modular-knowledge-investigator` 절차 실행) |
 | `knowledge/index.md` | 분할 지식 모듈들의 마스터 색인 (계층형 링크 카드) | 에이전트 |
 | `NEXT_CURRICULUM.md` | 완료 후 개인화 차기 로드맵 | 에이전트 |
 | `labs/` | 강의 중 제시한 실습 예제 코드 보관소 (선택형) | 에이전트 / 사용자 |
@@ -56,19 +57,30 @@
 ### 3단계: 검증 통과된 정제 강의 즉시 제공
 - 검증 통과 즉시 정제된 강의 본문을 빠르게 출력합니다.
 - 최상단 헤더에 `[사전 검증: 통과(VERIFIED)]`를 명시합니다.
-- 본문 말미에 생성될 지식 문서의 상대 경로 링크를 함께 안내합니다.
+- 본문 말미에 생성될 지식 문서의 상대 경로 링크를 함께 안내합니다:
+  - 📘 [선행 기반 지식](./knowledge/step_{current_step}_{slug}/01_prerequisites_*.md)
+  - ⚙️ [핵심 실무 지식](./knowledge/step_{current_step}_{slug}/02_foundations_*.md)
+  - 🚀 [확장 심화 지식](./knowledge/step_{current_step}_{slug}/03_deep_dive_*.md)
+  - 💬 [학습 질답 기록](./knowledge/step_{current_step}_{slug}/04_qa_archive.md) (질문 발생 시 실시간 누적)
+
+### 3-B단계: 스텝 내 질의응답 및 영구 아카이빙 (휘발 방지)
+- 학습자가 다음 단계로 넘어가지 않고 해당 스텝에서 추가 질문을 하거나 트러블슈팅/코드 설명을 요청하는 경우:
+- 에이전트는 친절하고 명확하게 답변함과 동시에 `.agents/skills/modular-knowledge-investigator/SKILL.md`의 Task 1-B 절차에 따라 `knowledge/step_{current_step}_{slug}/04_qa_archive.md`에 구조화된 질답 블록을 생성/누적 기록(append)합니다.
+- `knowledge/index.md`에 `* **질답 기록**: [04_qa_archive.md](./step_{current_step}_{slug}/04_qa_archive.md) - {N}건의 심층 문답 수록` 항목을 추가/갱신합니다.
+- 질문 키워드를 `progress.json`의 `user_interests`에 추가합니다.
 
 ### 4단계 & 5단계: 지식 아카이빙 및 스텝 전이
 - 사용자가 "다음 단계로 가자", "계속해줘" 등으로 진행을 승인하면:
-  1. `.agents/skills/modular-knowledge-investigator/SKILL.md` 절차에 따라 `knowledge/step_{current_step}_{slug}/` 폴더에 3개 분할 문서 작성 및 `knowledge/index.md` 색인 갱신을 완료합니다.
+  1. `.agents/skills/modular-knowledge-investigator/SKILL.md` 절차에 따라 `knowledge/step_{current_step}_{slug}/` 폴더에 3개 분할 문서 작성, 질답 아카이브(`04_qa_archive.md`) 최종 점검 및 `knowledge/index.md` 색인 갱신을 완료합니다.
   2. `progress.json`의 `completed_steps`에 현재 단계를 기록합니다.
   3. `current_step < total_steps`: `current_step`을 1 증가시키고 다음 단계의 1단계부터 즉시 실행합니다.
-  4. `current_step == total_steps`: `status`를 `COMPLETED`로 변경하고 `NEXT_CURRICULUM.md`를 자동 기획합니다.
+  4. `current_step == total_steps`: `status`를 `COMPLETED`로 변경하고, `03_deep_dive_*.md`와 `04_qa_archive.md`의 실제 문답 페인포인트를 종합하여 `NEXT_CURRICULUM.md`를 자동 기획합니다.
 
 ---
 
 ## 엄격한 제약 (Constraints)
 - **검증되지 않은 내용 출력 금지**: `lecture-verifier` 검증 미통과 상태에서 강의하지 마십시오.
+- **질의응답 휘발 방지**: 스텝 진행 중 사용자가 질문한 내용과 멘토의 기술 해설은 대화창에만 방치하지 말고 반드시 `04_qa_archive.md`에 영구 보관하십시오.
 - **퀴즈/과제 강요 금지**: 시험, 퀴즈 제출을 요구하지 마십시오.
 - **회귀 방지**: 강의 전 `CORRECTIONS.md` 규칙을 상시 대조하십시오.
 - **실시간 관심사 기록**: 흥미를 보인 키워드는 `progress.json`의 `user_interests`에 실시간 추가하십시오.
