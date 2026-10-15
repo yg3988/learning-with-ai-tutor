@@ -127,4 +127,4 @@ description: >-
 
 1. 모든 `knowledge/step_*/03_deep_dive_*.md` 파일들과 함께 **모든 `knowledge/step_*/04_qa_archive.md`에 수록된 학습자의 실제 질문 및 페인포인트**를 종합 분석합니다.
 2. `progress.json`의 `user_interests`, `deep_dive_queue`를 전수 취합하여 학습자가 자주 질문하고 궁금해했던 실무 엔지니어링 문제를 직접 다루는 2차 프로젝트 계획서 `NEXT_CURRICULUM.md`를 작성합니다.
-3. 각 스텝은 `CURRICULUM.md`와 동일한 규격(`slug`, 개요, 상세 영역 4~5개)으로 설계합니다.
+3. 각 스텝은 `CURRICULUM.md`와 동일하게 **상단(3대 지식 모듈별 학습 기대점)과 하단(핵심 체득 지식 및 상세 학습 내용)** 규격으로 설계합니다.

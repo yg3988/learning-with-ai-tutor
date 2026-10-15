@@ -44,6 +44,7 @@
    - 일반 강의 절차를 즉시 중단하고 `curriculum-architect` 스킬을 실행합니다.
    - 서술형 문답은 일반 대화로, 명확한 양자택일/객관식 버전 선택 및 프리셋 선택은 `ask_question` 모달로 진행합니다.
    - 합의된 내용을 바탕으로 `CURRICULUM.md`와 `CORRECTIONS.md`를 생성하고 `progress.json`을 초기화합니다.
+     - `CURRICULUM.md` 작성 시 각 스텝 상단에 3대 지식 모듈별 학습 기대점(`01_prerequisites`, `02_foundations`, `03_deep_dive`)을 명시하고, 하단에 학습자가 확실히 배워갈 핵심 체득 지식(Key Competencies)과 상세 학습 내용을 구조화하여 작성합니다.
    - `vercel-labs/find-skills`를 통해 코드 컨벤션/안티패턴 특화 스킬을 검색하여 추가할지 사용자에게 먼저 질문(옵트인)하며, 거절 시 건너뜁니다.
    - 사용자에게 확정 결과를 안내한 뒤, 1단계 학습 승인을 받아 1단계로 진입합니다.
 

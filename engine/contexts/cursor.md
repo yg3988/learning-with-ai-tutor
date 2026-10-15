@@ -43,6 +43,7 @@
 2. 부재 시 `.agents/skills/curriculum-architect/SKILL.md` 절차를 직접 읽고 실행합니다:
    - 번호가 매겨진 텍스트 선택지로 기술 스택 및 버전을 고정합니다.
    - 합의된 내용으로 `CURRICULUM.md`, `CORRECTIONS.md`, `progress.json`을 자동 생성합니다.
+     - `CURRICULUM.md` 작성 시 각 스텝 상단에 3대 지식 모듈별 학습 기대점(`01_prerequisites`, `02_foundations`, `03_deep_dive`)을 명시하고, 하단에 학습자가 확실히 배워갈 핵심 체득 지식(Key Competencies)과 상세 학습 내용을 구조화하여 작성합니다.
    - `vercel-labs/find-skills`를 통해 코드 컨벤션/안티패턴 특화 스킬을 검색하여 추가할지 사용자에게 먼저 질문(옵트인)하며, 거절 시 건너뜁니다.
    - 사용자 승인 후 1단계 학습으로 진입합니다.
 
