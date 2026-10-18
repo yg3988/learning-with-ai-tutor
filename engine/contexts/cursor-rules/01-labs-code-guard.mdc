@@ -1,0 +1,17 @@
+---
+description: Enforces Mandatory Disk Re-hydration and Shared Contract consistency when creating or editing sandbox, review, or capstone code under labs/
+globs: labs/**
+alwaysApply: false
+---
+
+# Labs Code Generation & Anti-Drift Guard
+
+`labs/` 하위 디렉터리(`labs/step_*`, `labs/review_pair_coding/*`, `labs/review_troubleshooting/*`, `labs/project/`)의 코드를 생성하거나 수정할 때는 대화 압축(Compaction)으로 인한 환각과 규약 표류를 막기 위해 아래 규칙을 엄수하십시오:
+
+1. **디스크 원본 강제 재로드 (Mandatory Disk Re-hydration)**:
+   - 대화 기억에만 의존하지 말고, 코드를 작성하기 직전에 반드시 디스크에서 `CORRECTIONS.md` (`## 누적 코드 & 아키텍처 규약 (Shared Contract)` 섹션)와 `CURRICULUM.md`를 먼저 읽으십시오.
+   - 복습(`labs/review_*`) 또는 단일 프로젝트 점진적 조립(`labs/project/`) 코드를 작성할 때는 반드시 해당 스텝의 정규 원본 코드(`labs/step_{K}_{slug}/`)와 `knowledge/step_{K}_{slug}/02_foundations_*.md`를 먼저 읽고 파생하십시오.
+2. **공유 규약 동기화**:
+   - 새로운 정규 스텝(`labs/step_{N}_{slug}/`) 코드 생성 직후에는 확정된 패키지 구조, 핵심 클래스/인터페이스 시그니처, 포트/설정을 `CORRECTIONS.md`의 `## 누적 코드 & 아키텍처 규약 (Shared Contract)`에 즉시 기록하십시오.
+3. **스텝별 순차 진행 (Step-by-Step)**:
+   - 복습 및 점진적 조립 진행 시 전 스텝의 코드를 한꺼번에 생성하지 말고 `.agents/skills/mastery-review-coach/SKILL.md` 절차에 따라 한 스텝씩 제공하고 질의응답을 거치십시오.

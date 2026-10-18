@@ -86,32 +86,48 @@ try {
     if (Test-Path $TempClone) { Remove-Item -Recurse -Force $TempClone -ErrorAction SilentlyContinue }
 }
 
-# 4. 대상 폴더로 이동하여 에이전트별 컨텍스트 배치
+# 4. 대상 폴더로 이동하여 에이전트별 컨텍스트 조립 및 배치 (DRY: Header + Core Pipeline)
 $TargetDir = Resolve-Path $ProjectName
+$Utf8NoBom = [Text.UTF8Encoding]::new($false)
+
+function Build-AgentContext([string]$HeaderFile, [string]$OutFile) {
+    $Header = [IO.File]::ReadAllText("$TargetDir\contexts\$HeaderFile", $Utf8NoBom).TrimEnd()
+    $Core   = [IO.File]::ReadAllText("$TargetDir\contexts\core-pipeline.md", $Utf8NoBom).TrimStart()
+    [IO.File]::WriteAllText("$TargetDir\$OutFile", "$Header`n`n$Core", $Utf8NoBom)
+}
+
+function Install-CursorRules() {
+    if (Test-Path "$TargetDir\contexts\cursor-rules") {
+        New-Item -ItemType Directory -Force -Path "$TargetDir\.cursor\rules" | Out-Null
+        Copy-Item "$TargetDir\contexts\cursor-rules\*" "$TargetDir\.cursor\rules\" -Force
+    }
+}
 
 switch ($AgentChoice) {
     "1" {
         Write-Host "⚙️ Antigravity CLI 맞춤 컨텍스트(AGENTS.md) 구성 완료" -ForegroundColor Green
-        Copy-Item "$TargetDir\contexts\antigravity.md" "$TargetDir\AGENTS.md" -Force
+        Build-AgentContext "antigravity.md" "AGENTS.md"
     }
     "2" {
         Write-Host "⚙️ Claude Code 맞춤 컨텍스트(CLAUDE.md) 구성 완료" -ForegroundColor Green
-        Copy-Item "$TargetDir\contexts\claude.md" "$TargetDir\CLAUDE.md" -Force
+        Build-AgentContext "claude.md" "CLAUDE.md"
     }
     "3" {
-        Write-Host "⚙️ Cursor 맞춤 컨텍스트(.cursorrules) 구성 완료" -ForegroundColor Green
-        Copy-Item "$TargetDir\contexts\cursor.md" "$TargetDir\.cursorrules" -Force
+        Write-Host "⚙️ Cursor 맞춤 컨텍스트(.cursorrules 및 .cursor/rules/*.mdc) 구성 완료" -ForegroundColor Green
+        Build-AgentContext "cursor.md" ".cursorrules"
+        Install-CursorRules
     }
     "4" {
         Write-Host "⚙️ 모든 에이전트 호환 브릿지 파일 전체 구성 완료" -ForegroundColor Green
-        Copy-Item "$TargetDir\contexts\antigravity.md" "$TargetDir\AGENTS.md" -Force
-        Copy-Item "$TargetDir\contexts\claude.md" "$TargetDir\CLAUDE.md" -Force
-        Copy-Item "$TargetDir\contexts\cursor.md" "$TargetDir\.cursorrules" -Force
-        Copy-Item "$TargetDir\contexts\antigravity.md" "$TargetDir\GEMINI.md" -Force
+        Build-AgentContext "antigravity.md" "AGENTS.md"
+        Build-AgentContext "claude.md" "CLAUDE.md"
+        Build-AgentContext "cursor.md" ".cursorrules"
+        Build-AgentContext "antigravity.md" "GEMINI.md"
+        Install-CursorRules
     }
     Default {
         Write-Host "⚙️ 기본 설정: Antigravity CLI (AGENTS.md) 구성" -ForegroundColor Green
-        Copy-Item "$TargetDir\contexts\antigravity.md" "$TargetDir\AGENTS.md" -Force
+        Build-AgentContext "antigravity.md" "AGENTS.md"
     }
 }
 

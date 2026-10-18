@@ -1,0 +1,14 @@
+---
+description: Enforces CommonMark bold/backtick rendering safety and relative path links across all Markdown documentation
+globs: "**/*.md"
+alwaysApply: false
+---
+
+# Markdown Rendering & Documentation Guard
+
+모든 마크다운 문서(`CURRICULUM.md`, `CORRECTIONS.md`, `knowledge/**/*.md`, `research/**/*.md`, `labs/**/README.md`)를 작성하거나 수정할 때는 `.agents/skills/markdown-doc-guard/SKILL.md`의 5대 안전 수칙을 준수하십시오:
+
+1. **괄호·특수기호 분리**: 볼드(`**`) 내부에 괄호를 넣지 말고 `**핵심 키워드** (부가 설명)` 형태로 볼드 먼저 닫고 한 칸 띄운 뒤 괄호를 여십시오.
+2. **백틱 중첩 금지**: 볼드 안에 백틱을 넣지 말고 `` `코드` (설명) `` 형태로 작성하십시오.
+3. **콜론 뒤 공백 필수**: `**항목**: 설명`처럼 닫는 `**` 뒤에 콜론을 찍고 반드시 공백을 두십시오.
+4. **상대 경로 링크 사용**: 프로젝트 루트 또는 현재 파일 기준의 상대 경로(`./knowledge/...`)만 사용하십시오.

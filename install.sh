@@ -66,40 +66,54 @@ if ! git clone --depth 1 -b "$GITHUB_BRANCH" "$CLONE_URL" "$TEMP_DIR" -q; then
 fi
 
 if [ -d "$TEMP_DIR/engine" ]; then
-  cp -r "$TEMP_DIR/engine/"* "$PROJECT_NAME/"
-  [ -f "$TEMP_DIR/engine/.gitattributes" ] && cp "$TEMP_DIR/engine/.gitattributes" "$PROJECT_NAME/"
+  cp -r "$TEMP_DIR/engine/." "$PROJECT_NAME/"
 else
-  cp -r "$TEMP_DIR/"* "$PROJECT_NAME/"
+  cp -r "$TEMP_DIR/." "$PROJECT_NAME/"
   rm -rf "$PROJECT_NAME/.git"
 fi
 rm -rf "$TEMP_DIR"
 
-# 4. 대상 폴더로 이동하여 에이전트별 컨텍스트 배치
+# 4. 대상 폴더로 이동하여 에이전트별 컨텍스트 조립 및 배치 (DRY: Header + Core Pipeline)
 cd "$PROJECT_NAME"
+
+build_agent_context() {
+  local header_file="$1"
+  local out_file="$2"
+  { cat "contexts/$header_file"; echo ""; cat "contexts/core-pipeline.md"; } > "$out_file"
+}
+
+install_cursor_rules() {
+  if [ -d "contexts/cursor-rules" ]; then
+    mkdir -p .cursor/rules
+    cp -r contexts/cursor-rules/* .cursor/rules/
+  fi
+}
 
 case "$AGENT_CHOICE" in
   1)
     echo "⚙️ Antigravity CLI 맞춤 컨텍스트(AGENTS.md) 구성 완료"
-    cp contexts/antigravity.md AGENTS.md
+    build_agent_context "antigravity.md" "AGENTS.md"
     ;;
   2)
     echo "⚙️ Claude Code 맞춤 컨텍스트(CLAUDE.md) 구성 완료"
-    cp contexts/claude.md CLAUDE.md
+    build_agent_context "claude.md" "CLAUDE.md"
     ;;
   3)
-    echo "⚙️ Cursor 맞춤 컨텍스트(.cursorrules) 구성 완료"
-    cp contexts/cursor.md .cursorrules
+    echo "⚙️ Cursor 맞춤 컨텍스트(.cursorrules 및 .cursor/rules/*.mdc) 구성 완료"
+    build_agent_context "cursor.md" ".cursorrules"
+    install_cursor_rules
     ;;
   4)
     echo "⚙️ 모든 에이전트 호환 브릿지 파일 전체 구성 완료"
-    cp contexts/antigravity.md AGENTS.md
-    cp contexts/claude.md CLAUDE.md
-    cp contexts/cursor.md .cursorrules
-    cp contexts/antigravity.md GEMINI.md
+    build_agent_context "antigravity.md" "AGENTS.md"
+    build_agent_context "claude.md" "CLAUDE.md"
+    build_agent_context "cursor.md" ".cursorrules"
+    build_agent_context "antigravity.md" "GEMINI.md"
+    install_cursor_rules
     ;;
   *)
     echo "⚙️ 기본 설정: Antigravity CLI (AGENTS.md) 구성"
-    cp contexts/antigravity.md AGENTS.md
+    build_agent_context "antigravity.md" "AGENTS.md"
     ;;
 esac
 
