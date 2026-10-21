@@ -5,6 +5,7 @@
 | `CURRICULUM.md` | 상세 커리큘럼 원본 (확정 스택/버전 매트릭스 및 각 Step의 `slug` 포함) | 사용자 / `curriculum-architect` 스킬 |
 | `CORRECTIONS.md` | 프로젝트 결정 + 오개념 정정 + **누적 코드 & 아키텍처 규약** (`Shared Contract`) 원장. **CURRICULUM.md보다 우선** | 멘토 (`anti-regression-guard`) / `curriculum-architect` |
 | `progress.json` | 진도/상태/관심사/심화 후보 큐/생성된 지식 및 실습 모듈 추적 (**단일 쓰기 주체**: 메인 멘토) | 메인 멘토 (`curriculum-architect` 포함) |
+| `.devcontainer/` | 확정 버전 매트릭스에서 파생한 실습 실행 환경 (`devcontainer.json`, 필요 시 `docker-compose.yml`). 매트릭스 변경 시 함께 갱신 | `curriculum-architect` 스킬 |
 | `research/step_{N}_research.md` | 단계별 기술 표준 및 RFC 조사 보고서 | `step-researcher` 스킬 |
 | `research/step_{N}_verification.md` | 강의 내용 무결성, CLI/API 실존 여부(Grounding) 및 버전 정합성 사전 검증 보고서 | `lecture-verifier` 스킬 |
 | `knowledge/step_{N}_{slug}/` | 주제별 분할 지식 모듈 (`01_prerequisites`, `02_foundations` [ADR 포함], `03_deep_dive` [운영 체크리스트 포함]) | `modular-knowledge-investigator` 절차 |
@@ -25,7 +26,7 @@
 1. 워크스페이스에 `CURRICULUM.md` 파일이 존재하지 않거나 비어있는지 확인합니다.
 2. [부재 시]:
    - 일반 강의 절차를 즉시 중단하고 `.agents/skills/curriculum-architect/SKILL.md` 스킬을 실행합니다.
-   - 합의된 내용을 바탕으로 기본 디렉터리(`research/`, `knowledge/`, `labs/`), 마스터 색인 초기 파일(`knowledge/index.md`), `CURRICULUM.md`, `CORRECTIONS.md` (`## 누적 코드 & 아키텍처 규약 (Shared Contract)` 섹션 포함)를 생성하고 `progress.json` (`learning_mode: "guided_sandbox_isolated"`)을 초기화합니다.
+   - 합의된 내용을 바탕으로 기본 디렉터리(`research/`, `knowledge/`, `labs/`), 마스터 색인 초기 파일(`knowledge/index.md`), `CURRICULUM.md`, `CORRECTIONS.md` (`## 누적 코드 & 아키텍처 규약 (Shared Contract)` 섹션 포함), 확정 버전 매트릭스 기반 `.devcontainer/`를 생성하고 `progress.json` (`learning_mode: "guided_sandbox_isolated"`)을 초기화합니다.
    - `CURRICULUM.md` 작성 시 최상단에 확정 기술 스택 및 버전 매트릭스 표를 작성하고, 각 스텝 상단에 3대 지식 모듈별 학습 기대점(`01_prerequisites`, `02_foundations`, `03_deep_dive`) 및 **스텝별 독립 샌드박스 실습 목표** (`labs/step_{N}_{slug}/`)를 명시하며, 하단에 핵심 체득 지식(Key Competencies), 상세 학습 내용, 그리고 **정규 과정 완료 후 선택형 복습 및 단일 프로젝트 점진적 조립 안내**를 구조화하여 작성합니다.
    - `vercel-labs/find-skills`를 통해 코드 컨벤션/안티패턴 특화 스킬을 검색하여 추가할지 사용자에게 먼저 질문(옵트인)하며, 거절 시 건너뜁니다.
    - 사용자에게 확정 결과를 안내한 뒤, 1단계 학습 승인을 받아 1단계로 진입합니다.

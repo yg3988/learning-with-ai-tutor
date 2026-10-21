@@ -2,9 +2,10 @@
 name: curriculum-architect
 description: >-
   Conducts an intake interview to fix environments, languages, frameworks, and package
-  versions, and generates CURRICULUM.md, CORRECTIONS.md, and initializes progress.json.
-  Features a Discovery Mode with 4 curated architecture presets when the user is unsure
-  or cannot prompt their goals. Uses interactive conversation as default, and allows
+  versions, and generates CURRICULUM.md, CORRECTIONS.md, .devcontainer/ (derived from the
+  Fixed Stack Matrix), and initializes progress.json. Features a two-stage Discovery Mode
+  (domain first, then version-agnostic curated presets) when the user is unsure or cannot
+  prompt their goals. Uses interactive conversation as default, and allows
   ask_question tool strictly for clear-cut/binary choices. Use when CURRICULUM.md is
   missing or uninitialized.
 ---
@@ -31,28 +32,93 @@ description: >-
 
 학습자가 아키텍처나 목표를 어떻게 프롬프팅해야 할지 몰라 막연해할 때(예: *"뭐 해야 할지 모르겠어"*, *"추천해줘"*, *"그냥 백엔드 공부하고 싶어"*, *"gRPC 써보고 싶은데 어떻게 짜야 해?"* 등)는 **즉시 탐색 모드를 발동**합니다.
 
-### 1단계: 대표 아키텍처 프리셋 카탈로그 제시 (`ask_question` 활용)
-학습자에게 전문 용어를 묻지 않고, 아래 4가지 실무 검증 프리셋 중 하나를 고르도록 선택지를 띄웁니다:
+> [!IMPORTANT]
+> **프리셋에는 버전을 기재하지 않습니다.** 프리셋은 기술 조합만 정의하며, 구체적인 버전은 아래 4단계에서 실시간으로 확인한 뒤 확정합니다. 문서에 하드코딩된 버전은 시간이 지나면 낡고, 낡은 버전이 확정 버전 매트릭스에 들어가면 이후 모든 검증 단계가 이를 정답으로 간주하기 때문입니다.
 
-- **트랙 A (계약 우선 & 고성능 RPC 풀스택)**:
-  - 스택: OpenAPI 3.1 + React 19 + Node.js NestJS 10 + Java 21 Spring Boot 3.3 (gRPC 내부 통신) + Nginx
-  - 적합 대상: 프론트/백엔드 간 API 불일치를 해결하고 서비스 간 고속 바이너리 통신을 경험하고 싶은 학습자
-- **트랙 B (대규모 비동기 이벤트 분산 시스템)**:
-  - 스택: Apache Kafka + Java 21 Spring Boot 3.3 + Transactional Outbox 패턴 + Redis 분산 락
-  - 적합 대상: 트래픽 급증, 결제/주문 시스템의 데이터 정합성 및 비동기 메시징을 학습하고 싶은 학습자
-- **트랙 C (고성능 API 게이트웨이 & BFF 마이크로서비스)**:
-  - 스택: Nginx 리버스 프록시 + Node.js BFF(Backend for Frontend) + gRPC 멀티 서비스
-  - 적합 대상: 단일 진입점 라우팅, 인증/인가 통합, 클라이언트 맞춤형 데이터 취합 구조를 배우고 싶은 학습자
-- **트랙 D (맞춤형 탐색 트랙)**:
-  - 사용자가 현재 가장 익숙한 주 언어(Java, TypeScript, Go, Python 등) 1개만 받아 에이전트가 최적의 조합을 역산출
+### 1단계: 학습 분야 선택 (`ask_question` 활용)
+학습자에게 전문 용어를 묻지 않고, 먼저 관심 분야 하나를 고르도록 선택지를 띄웁니다:
 
-### 2단계: 역방향 2문답 (필요 시)
-프리셋을 고른 후 세부 조정이 필요하거나 트랙 D를 선택한 경우:
+1. **🖥️ 백엔드·분산 시스템**: API 서버, 서비스 간 통신, 메시징, 데이터 정합성
+2. **🎨 프론트엔드·풀스택**: 웹 UI, 클라이언트 상태 관리, 서버 렌더링, 타입 안전 API 연동
+3. **📊 데이터·ML**: 데이터 파이프라인, 모델 학습·서빙, LLM 애플리케이션
+4. **☁️ 인프라·클라우드 네이티브**: 컨테이너 오케스트레이션, IaC, CI/CD, 관측성
+5. **📱 모바일**: 크로스플랫폼 앱 개발
+6. **🧭 맞춤형**: 주 언어나 관심 기술만 입력하면 에이전트가 최적의 조합을 역산출
+
+### 2단계: 분야별 아키텍처 프리셋 선택 (`ask_question` 활용)
+선택한 분야의 프리셋 카탈로그를 제시합니다. 모든 분야에는 **맞춤형 조합** 선택지가 함께 제공됩니다.
+
+#### 1. 백엔드·분산 시스템
+- **프리셋 1-A** (계약 우선 & 고성능 RPC):
+  - 스택: OpenAPI + gRPC (Protobuf) + Spring Boot 또는 NestJS + Nginx
+  - 적합 대상: 클라이언트·서버 간 API 불일치를 해결하고 서비스 간 고속 바이너리 통신을 경험하고 싶은 학습자
+- **프리셋 1-B** (대규모 비동기 이벤트 분산 시스템):
+  - 스택: Apache Kafka + Spring Boot + Transactional Outbox 패턴 + Redis 분산 락
+  - 적합 대상: 트래픽 급증, 결제·주문 시스템의 데이터 정합성 및 비동기 메시징을 학습하고 싶은 학습자
+- **프리셋 1-C** (API 게이트웨이 & BFF 마이크로서비스):
+  - 스택: Nginx 리버스 프록시 + Node.js BFF (Backend for Frontend) + gRPC 멀티 서비스
+  - 적합 대상: 단일 진입점 라우팅, 인증·인가 통합, 클라이언트 맞춤형 데이터 취합 구조를 배우고 싶은 학습자
+
+#### 2. 프론트엔드·풀스택
+- **프리셋 2-A** (타입 안전 SPA):
+  - 스택: React + TypeScript + Vite + TanStack Query + OpenAPI 클라이언트 코드 생성
+  - 적합 대상: 서버 상태와 클라이언트 상태를 분리하고 API 계약 기반으로 프론트엔드를 구성하고 싶은 학습자
+- **프리셋 2-B** (SSR 풀스택):
+  - 스택: Next.js (App Router, Server Actions) + Prisma + PostgreSQL
+  - 적합 대상: 서버 렌더링, 캐싱 전략, 하나의 코드베이스로 풀스택을 다뤄보고 싶은 학습자
+- **프리셋 2-C** (실시간 협업 애플리케이션):
+  - 스택: React + WebSocket 또는 SSE + Node.js + Redis Pub/Sub
+  - 적합 대상: 실시간 동기화, 연결 관리, 낙관적 업데이트를 배우고 싶은 학습자
+
+#### 3. 데이터·ML
+- **프리셋 3-A** (배치 데이터 파이프라인):
+  - 스택: Python + Apache Airflow + dbt + PostgreSQL 또는 DuckDB
+  - 적합 대상: 데이터 수집·변환·적재 (ELT) 흐름과 워크플로 오케스트레이션을 배우고 싶은 학습자
+- **프리셋 3-B** (ML 모델 학습·서빙):
+  - 스택: Python + scikit-learn 또는 PyTorch + MLflow + FastAPI
+  - 적합 대상: 실험 추적, 모델 버전 관리, 추론 API 배포까지의 MLOps 흐름을 배우고 싶은 학습자
+- **프리셋 3-C** (LLM 애플리케이션 & RAG):
+  - 스택: Python + LLM API + PostgreSQL (pgvector) + FastAPI
+  - 적합 대상: 임베딩, 벡터 검색, 검색 증강 생성 (RAG) 파이프라인을 구축해보고 싶은 학습자
+
+#### 4. 인프라·클라우드 네이티브
+- **프리셋 4-A** (컨테이너 오케스트레이션):
+  - 스택: Docker + Kubernetes (kind 로컬 클러스터) + Helm
+  - 적합 대상: 컨테이너 배포, 서비스 디스커버리, 롤링 업데이트를 직접 다뤄보고 싶은 학습자
+- **프리셋 4-B** (IaC & GitOps):
+  - 스택: Terraform + GitHub Actions + Argo CD
+  - 적합 대상: 인프라를 코드로 관리하고 선언적 배포 파이프라인을 구축하고 싶은 학습자
+- **프리셋 4-C** (관측성 스택):
+  - 스택: OpenTelemetry + Prometheus + Grafana + Loki
+  - 적합 대상: 메트릭·로그·트레이스를 수집하고 장애를 추적하는 운영 역량을 기르고 싶은 학습자
+
+#### 5. 모바일
+- **프리셋 5-A** (React Native 크로스플랫폼):
+  - 스택: React Native + Expo + TypeScript
+  - 적합 대상: 웹 개발 경험을 살려 iOS·Android 앱을 함께 개발하고 싶은 학습자
+- **프리셋 5-B** (Flutter 크로스플랫폼):
+  - 스택: Flutter + Dart + Riverpod
+  - 적합 대상: 선언형 UI와 단일 코드베이스 기반 고성능 앱을 개발하고 싶은 학습자
+- **devcontainer 제약 고지**: 모바일 에뮬레이터·시뮬레이터와 iOS 빌드는 컨테이너 안에서 실행할 수 없습니다. 컨테이너는 툴체인, 린트, 테스트, 웹 미리보기 (Expo Web, Flutter Web) 용도로 구성하고, 실기기·에뮬레이터 실행은 호스트에서 수행한다는 점을 프리셋 선택 시 반드시 안내합니다.
+
+#### 6. 맞춤형
+- 학습자가 현재 가장 익숙하거나 써보고 싶은 주 언어 또는 기술 1개만 받아, 에이전트가 해당 분야에서 실무적으로 검증된 조합을 역산출하여 제안합니다.
+
+### 3단계: 역방향 2문답 (필요 시)
+프리셋을 고른 후 세부 조정이 필요하거나 맞춤형을 선택한 경우:
 1. "현재 가장 익숙하거나 써보고 싶은 주 언어는 무엇인가요?"
-2. "실습 시 프론트엔드 UI 조립까지 포함하길 원하시나요, 아니면 백엔드/인프라 통신에만 집중하길 원하시나요?"
+2. "실습 범위를 어디까지 포함하길 원하시나요?" (예: 백엔드 분야라면 프론트엔드 UI 포함 여부, 데이터 분야라면 서빙 API 포함 여부)
 
-### 3단계: 에이전트 주도 완성 청사진 제안 및 원클릭 승인
-- 수집된 정보를 바탕으로 에이전트가 **완성된 아키텍처 다이어그램(Mermaid), 트래픽 경로(①②③), 고정된 버전 목록**을 먼저 브리핑합니다.
+### 4단계: 버전 실시간 확인 및 확정 (웹 검색 필수)
+- 선택된 기술 조합의 각 구성 요소에 대해 웹 검색으로 **현재 안정 버전 또는 LTS 버전**을 확인합니다. 대화 기억이나 학습 데이터에 의존하여 버전을 추측하지 마십시오.
+- 다음 세 가지를 함께 검증합니다:
+  1. **구성 요소 간 호환성**: 예) Spring Boot ↔ JDK, Next.js ↔ React, Airflow ↔ Python
+  2. **devcontainer 제공 여부**: 해당 버전이 공식 devcontainer 이미지 (`mcr.microsoft.com/devcontainers/*`) 또는 devcontainer Feature (`ghcr.io/devcontainers/features/*`)로 설치 가능한지
+  3. **부가 서비스 이미지 존재 여부**: Kafka, Redis, PostgreSQL 등 Docker Compose 서비스로 띄울 컨테이너 이미지 태그가 Docker Hub 또는 공식 레지스트리에 실재하는지
+- 확인한 출처 URL은 확정 버전 매트릭스의 `공식 표준 / 사양서` 열에 기재합니다.
+
+### 5단계: 에이전트 주도 완성 청사진 제안 및 원클릭 승인
+- 수집된 정보를 바탕으로 에이전트가 **완성된 아키텍처 다이어그램(Mermaid), 트래픽 경로(①②③), 4단계에서 확인한 확정 버전 목록, devcontainer 구성 개요**를 먼저 브리핑합니다.
 - 사용자에게 *"이 청사진과 버전으로 커리큘럼을 생성하고 바로 시작할까요?"*라고 묻고, 사용자의 승인을 받으면 즉시 산출물 생성 단계로 진입합니다.
 
 ---
@@ -65,6 +131,7 @@ description: >-
    - 프론트엔드 환경 및 버전 고정
    - 백엔드 런타임/프레임워크 버전 고정
    - 통신 규약(OAS 3.1 vs 3.0, Protobuf 3) 및 리버스 프록시(Nginx 등)
+   - 버전 후보는 탐색 모드 4단계와 동일하게 **웹 검색으로 현재 안정·LTS 버전, 구성 요소 간 호환성, devcontainer 제공 여부를 확인**한 뒤 제시합니다.
 3. **프로젝트 불변 결정 및 금지 사항** (일반 대화)
    - 반드시 배제할 라이브러리(예: Axios 배제)나 지켜야 할 네트워크 정책(포트 분리 등)
 4. **단계 구성 및 실습 깊이**
@@ -170,7 +237,23 @@ description: >-
 }
 ```
 
-### 5. 스택 특화 스킬 탐색 및 설치 (선택형 옵트인: `vercel-labs/find-skills`)
+### 5. devcontainer 개발 환경 생성 (`.devcontainer/`)
+모든 실습 (`labs/`)은 devcontainer 안에서 실행하는 것을 전제로 합니다. **확정 버전 매트릭스를 유일한 기준**으로 삼아 아래 파일을 생성합니다:
+
+1. **단일 런타임 구성** (부가 서비스가 없는 경우): `.devcontainer/devcontainer.json`
+   - `image`: 주 언어의 공식 devcontainer 이미지 (`mcr.microsoft.com/devcontainers/{언어}:{매트릭스 버전}`)
+   - `features`: 보조 런타임·CLI는 공식 Feature로 추가하고 `version` 값을 매트릭스와 정확히 일치시킵니다 (예: `"ghcr.io/devcontainers/features/node:1": { "version": "{매트릭스 버전}" }`)
+2. **다중 서비스 구성** (Kafka, Redis, PostgreSQL 등이 필요한 경우): `.devcontainer/devcontainer.json` + `.devcontainer/docker-compose.yml`
+   - `devcontainer.json`은 `dockerComposeFile`, `service`, `workspaceFolder`로 개발용 컨테이너를 지정합니다.
+   - `docker-compose.yml`의 각 서비스 이미지 태그는 매트릭스의 확정 버전으로 고정합니다 (`latest` 태그 사용 금지).
+3. **공통 규칙**:
+   - `forwardPorts`: `CORRECTIONS.md`의 `## 누적 코드 & 아키텍처 규약 (Shared Contract)`에 등록한 포트 할당표와 일치시킵니다.
+   - `customizations.vscode.extensions`: 확정 스택의 공식 언어 지원 확장만 최소한으로 등록합니다.
+   - `postCreateCommand`: 의존성 설치나 CLI 버전 출력 (예: `java -version && node -v`) 등 환경 검증 명령을 등록합니다.
+   - 버전을 매트릭스와 다르게 적거나, 매트릭스에 없는 런타임을 임의로 추가하지 마십시오. 매트릭스를 변경하면 `.devcontainer/`도 반드시 함께 갱신합니다.
+4. **환경 불변식 등록**: `CORRECTIONS.md`의 `## 프로젝트 결정`에 *"모든 실습은 devcontainer 안에서 실행한다. 실행 명령은 컨테이너 내부 (Linux 셸) 기준으로 안내한다."*를 등록합니다. 모바일 분야처럼 호스트 실행이 필요한 작업은 그 범위를 함께 명시합니다.
+
+### 6. 스택 특화 스킬 탐색 및 설치 (선택형 옵트인: `vercel-labs/find-skills`)
 불필요한 토큰 소모를 방지하기 위해, 스킬 검색을 무단 실행하지 않고 **사용자에게 먼저 확인**합니다.
 
 1. **사용자 의사 확인 (선 질문)**:
@@ -189,4 +272,4 @@ description: >-
 ---
 
 생성 및 스킬 선택 완료 후 사용자에게:
-"학습 환경 설정이 모두 완료되었습니다. 모든 정규 스텝은 **가이드형 샌드박스 실습 모드** (`knowledge/` 지식 문서 4종 + `labs/step_{N}_{slug}/` 독립 실행 예제 제공)로 진행되며, 전 과정 수료 후에는 **스텝별 실전 복습 트랙** (`REVIEW_PHASE`)과 **단일 프로젝트 점진적 조립** (`labs/project/`)도 선택하실 수 있습니다. 1단계 학습을 시작할까요?"라고 묻고, 승인 시 메인 멘토의 1단계 라이프사이클로 진입합니다.
+"학습 환경 설정이 모두 완료되었습니다. 에디터에서 **Reopen in Container** (`Dev Containers: Reopen in Container`)로 devcontainer를 열어 주세요. 모든 정규 스텝은 **가이드형 샌드박스 실습 모드** (`knowledge/` 지식 문서 4종 + `labs/step_{N}_{slug}/` 독립 실행 예제 제공)로 진행되며, 전 과정 수료 후에는 **스텝별 실전 복습 트랙** (`REVIEW_PHASE`)과 **단일 프로젝트 점진적 조립** (`labs/project/`)도 선택하실 수 있습니다. 1단계 학습을 시작할까요?"라고 묻고, 승인 시 메인 멘토의 1단계 라이프사이클로 진입합니다.
