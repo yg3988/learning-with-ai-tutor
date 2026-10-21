@@ -15,7 +15,9 @@
 | `labs/step_{N}_{slug}/` | **가이드형 샌드박스 실습 모드** (정규 스텝 기본값): 스텝별 독립 실행 가능한 완성형 예제 코드 및 실행 가이드(`README.md`) | 메인 멘토 |
 | `labs/review_pair_coding/step_{K}_{slug}/` | **선택형 복습 - 3안**: `labs/step_{K}_{slug}/` 원본을 디스크에서 읽어 파생한 스텝별 페어 구현(`TODO` 빈칸 채우기) 샌드박스 | `mastery-review-coach` 스킬 / 사용자 |
 | `labs/review_troubleshooting/step_{K}_{slug}/` | **선택형 복습 - 4안**: `labs/step_{K}_{slug}/` 원본을 디스크에서 읽어 파생한 스텝별 장애/안티패턴 진단 샌드박스 | `mastery-review-coach` 스킬 / 사용자 |
-| `labs/project/` | **선택형 단일 프로젝트 점진적 조립**: 복습 완료 후 디스크의 `labs/step_*` 및 `CORRECTIONS.md` 규약을 기반으로 스텝별 누적 조립하는 통합 프로젝트 | `mastery-review-coach` 스킬 / 사용자 |
+| `labs/project/` | **선택형 단일 프로젝트 점진적 조립**: 복습 완료 후 디스크의 `labs/step_*` 및 `CORRECTIONS.md` 규약을 기반으로 Step 또는 마일스톤 라운드 단위로 누적 조립하는 통합 프로젝트 | `mastery-review-coach` 스킬 / 사용자 |
+| `labs/project/ASSEMBLY.md` | 조립 장부: 모듈 맵, 공개 인터페이스·진입점, 실행 구성, 다음 라운드 연결 지점 (현재 상태 원장) | `mastery-review-coach` 스킬 |
+| `research/intake_notes.md` | 커리큘럼 인터뷰 답변·버전 확인 근거·범위 점검 결과 원장 (대화 압축 대비) | `curriculum-architect` 스킬 |
 | `knowledge/review_mastery/04_qa_archive.md` | 선택형 복습 단계 및 단일 프로젝트 점진적 조립 과정의 코드 리뷰·진단·질답 영구 아카이브 | `mastery-review-coach` 스킬 / `modular-knowledge-investigator` |
 
 ---
@@ -49,7 +51,7 @@
 ### 3단계: 가이드형 샌드박스 생성, 공유 코드 규약 등록 및 정제 강의 즉시 제공 (순서 전진 ⚡)
 - 2단계 검증이 통과(`VERIFIED`)되면:
   1. `labs/step_{current_step}_{slug}/` 디렉터리에 **즉시 실행 가능한 완성형 실습 코드, 설정 파일, 그리고 실행/실험 방법이 적힌 가이드 문서** (`README.md`)를 생성하고, `progress.json`의 `lab_modules`에 경로를 등록합니다.
-  2. `anti-regression-guard` 스킬의 Step 4에 따라, 방금 생성된 Step `{current_step}` 샌드박스에서 확정된 **패키지/모듈 경로, 핵심 도메인 모델/인터페이스 시그니처, 포트/엔드포인트 설정**을 `CORRECTIONS.md`의 `## 누적 코드 & 아키텍처 규약 (Shared Contract)` 섹션에 즉시 요약 등록합니다.
+  2. `anti-regression-guard` 스킬의 Step 4에 따라, 방금 생성된 Step `{current_step}` 샌드박스에서 확정된 **패키지/모듈 경로, 핵심 도메인 모델/인터페이스 시그니처, 포트/엔드포인트 설정**을 `CORRECTIONS.md`의 `## 누적 코드 & 아키텍처 규약 (Shared Contract)` 섹션에 현재 상태로 병합합니다 (새 항목은 추가, 바뀐 항목은 덮어쓰기, 폐기 항목은 삭제).
   3. **사용자에게 정제 강의를 출력**합니다 (최상단 헤더에 `사전 검증: 통과(VERIFIED)` 명시).
 - 본문에는 데이터/제어 흐름을 시각화한 **Mermaid 다이어그램**, **기술 선택 근거** (ADR 요약), 그리고 방금 생성된 `labs/step_{current_step}_{slug}/` **샌드박스 실행 가이드**를 반드시 포함합니다.
 - 본문 말미에 생성된 실습 샌드박스 및 주제별 지식 문서 상대 경로 링크를 함께 안내합니다:
@@ -83,7 +85,8 @@
    - 옵션 1~3 선택 시 **절대 전 스텝 코드를 일괄 생성하지 않고**, `K = 1`부터 `total_steps`까지 매 스텝마다 디스크의 `CORRECTIONS.md` 및 `labs/step_{K}_{slug}/` 원본을 직접 다시 읽어(Mandatory Disk Re-hydration) 파생 예제 코드를 제공하고, **제공한 코드에서 궁금한 점과 다음 스텝(`K+1`) 예제 코드 제공 여부**를 확인하며 차근차근 진행합니다.
 2. **7단계 요약 (`CAPSTONE_ASSEMBLY` 및 차기 커리큘럼 기획)**:
    - 6단계 복습 완료 후, 단일 프로젝트 점진적 조립(`labs/project/`) 진행 의사를 물어봅니다.
-   - 진행 선택 시 디스크의 `labs/step_*` 및 `CORRECTIONS.md` 규약을 기반으로 Step 1부터 Step N까지 한 스텝씩 차근차근 통합 조립하며, 건너뛰거나 조립을 완료하면 `status`를 `"COMPLETED"`로 변경하고 모든 `03_deep_dive`와 `04_qa_archive.md`(복습·조립 아카이브 포함)를 취합해 `NEXT_CURRICULUM.md`를 자동 기획합니다.
+   - 진행 선택 시 `total_steps`가 6 이하이면 Step 단위로, 6을 넘으면 선행 관계로 묶인 2~3개 Step의 **마일스톤 라운드** 단위로 조립합니다. 각 라운드는 `labs/project/` 전체가 아니라 **조립 장부** (`labs/project/ASSEMBLY.md`)와 이번 라운드가 수정할 파일만 읽어 통합합니다. 건너뛰거나 조립을 완료하면 `status`를 `"COMPLETED"`로 변경하고 모든 `03_deep_dive`와 `04_qa_archive.md`(복습·조립 아카이브 포함), 그리고 `CURRICULUM.md`의 `## 후속 Part 예정 범위`를 취합해 `NEXT_CURRICULUM.md`를 자동 기획합니다.
+3. **컨텍스트 크기 유지**: 복습 Step 또는 조립 라운드를 마칠 때마다 기록을 디스크에 저장한 뒤, 새 세션을 열거나 `/compact`를 실행해도 그대로 이어진다는 **세션 체크포인트 안내**를 덧붙입니다. 무거운 코드 파생 작업은 런타임이 지원하면 서브에이전트에 위임합니다.
 
 ---
 

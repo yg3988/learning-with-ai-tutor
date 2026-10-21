@@ -1,0 +1,20 @@
+{
+  "current_step": 1,
+  "total_steps": "{CURRICULUM.md에 실제 생성한 Step 수}",
+  "curriculum_part": 1,
+  "total_parts": "{Part 분할 시 전체 Part 수, 미분할 시 1}",
+  "learning_mode": "guided_sandbox_isolated",
+  "status": "READY_TO_START",
+  "review_status": "PENDING_CHOICE",
+  "review_current_step": 1,
+  "capstone_status": "PENDING",
+  "capstone_current_round": 1,
+  "capstone_rounds": [],
+  "completed_steps": [],
+  "corrections_count": 0,
+  "user_interests": [],
+  "deep_dive_queue": [],
+  "knowledge_modules": [],
+  "lab_modules": [],
+  "last_synced": "{현재날짜}"
+}

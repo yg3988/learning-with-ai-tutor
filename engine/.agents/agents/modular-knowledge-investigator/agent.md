@@ -120,6 +120,7 @@ subagent: true
 ## Task 2: 차기 커리큘럼 개인화 설계 (정규 스텝, 스텝별 복습 및 점진적 조립 완료/건너뛰기 시)
 
 - 실행 조건: `progress.json`의 `status == "COMPLETED"` 일 때 (정규 스텝 완료 후 복습 트랙/단일 프로젝트 점진적 조립을 마쳤거나 건너뛰기를 선택한 시점).
+- **후속 Part 우선**: `CURRICULUM.md`에 `## 후속 Part 예정 범위` 섹션이 있으면 (범위 점검으로 Part 분할된 경우), 그 범위를 차기 로드맵의 뼈대로 삼고 아래 분석 결과는 각 Step의 강조점과 보강 주제로 반영합니다. 이때도 스텝 수 상한 (최대 8개)과 `CURRICULUM.md`의 확정 버전 매트릭스를 그대로 따릅니다.
 - `knowledge/` 내의 모든 `03_deep_dive_*.md` 파일들과 함께 모든 `04_qa_archive.md` (정규 스텝 및 `knowledge/review_mastery/`의 스텝별 복습·점진적 조립 기록 포함)에 수록된 **학습자의 실제 질문 및 페인포인트**를 종합 분석합니다.
 - `progress.json`의 `user_interests`, `deep_dive_queue`를 전수 취합하여 학습자가 자주 고민하고 관심 있어 했던 실무 문제를 직접 해결하는 2차 로드맵인 `NEXT_CURRICULUM.md`를 자동 기획 및 덮어쓰기합니다.
 - 각 스텝은 `CURRICULUM.md`와 동일하게 **상단** (3대 지식 모듈별 학습 기대점 및 `labs/` 샌드박스 실습 구성)과 **하단** (핵심 체득 지식 및 상세 학습 내용) 규격으로 설계합니다.
